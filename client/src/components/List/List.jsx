@@ -2,24 +2,24 @@
 import cn from 'classnames'
 import styles from './List.module.css'
 import { v4 as uuid } from 'uuid'
-import React, { useState } from "react";
+import React, { useState } from "react"
 import deleteData from '../../utils/deleteData.mjs'
-import patchData from '../../utils/patchData.mjs';
+import patchData from '../../utils/patchData.mjs'
 
 const List = ({ title, bgColor, listItems}) => {
-	const [imageURL, setImageURL] = useState();
-	const [itemImages, setItemImages] = useState({});
-	const fileReader = new FileReader();
+	const [imageURL, setImageURL] = useState()
+	const [itemImages, setItemImages] = useState({})
+	const fileReader = new FileReader()
 	fileReader.onloadend = () => {
-		setImageURL(fileReader.result);
+		setImageURL(fileReader.result)
 	};
-	const handleOnChange = (event, itemId) => {
-		if (event.target.files && event.target.files.length) {
-		  const file = event.target.files[0];
+	const handleOnChange = (e, itemId) => {
+		if (e.target.files && e.target.files.length) {
+		  const file = e.target.files[0]
 		  const reader = new FileReader();
 		  reader.onloadend = async () => {
-			const base64Image = reader.result.split(',')[1]; // Получаем base64-кодированную часть строки
-			const globalImageUrl = `data:image/${file.type};base64,${base64Image}`; // Создаем глобальную ссылку на изображение
+			const base64Image = reader.result.split(',')[1] // Получаем base64-кодированную часть строки
+			const globalImageUrl = `data:image/${file.type};base64,${base64Image}`; 
 	  
 			setItemImages((prevImages) => ({
 			  ...prevImages,
@@ -27,7 +27,7 @@ const List = ({ title, bgColor, listItems}) => {
 			}));
 			await patchData('http://localhost:3002/patch', itemId, { image: globalImageUrl });
 		  }
-		  reader.readAsDataURL(file);
+		  reader.readAsDataURL(file)
 		}
 	  }
 
@@ -35,8 +35,8 @@ const List = ({ title, bgColor, listItems}) => {
 		<div className={cn(styles['container'], styles[bgColor])}>
 			<h2>{title}</h2>
 			<ul>
-				{listItems.map((el, index) => {
-					const itemId = el._id;
+				{listItems.map(el => {
+					const itemId = el._id
 					return (
 						<li
 							className={cn(styles['item'])}
@@ -53,7 +53,7 @@ const List = ({ title, bgColor, listItems}) => {
 										id="file-loader-button"
 										type="file"
 										className="file-uploader__upload-button"
-										onChange={(event) => handleOnChange(event, itemId)}
+										onChange={(e) => handleOnChange(e, itemId)}
 									/>
 								</form>
 							</div>

@@ -30,7 +30,8 @@ function App() {
 	const upRegister = () => {
 		setRegistrationStyle({ top: 0 })
 	}
-	const downRegister = () => {
+	const downRegister = (e) => {
+		e.preventDefault()
 		setRegistrationStyle({ top: '-480px' })
 	}
 
